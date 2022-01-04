@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,24 +31,29 @@ public class UserController {
 	private UserServiceImpl userServiceImpl;
 
 	@GetMapping("/getusers")
-	public List<User> getAllUsers(User user){
-		return userServiceImpl.getAllUsers(user);
+	public ResponseEntity<List<User>> getAllUsers(User user){
+		return new ResponseEntity<> (userServiceImpl.getAllUsers(user), HttpStatus.OK);
 	}
 	@PostMapping("/saveuser")
-	public void saveUser(@RequestBody User user) {
-		userServiceImpl.saveUser(user);
+	public ResponseEntity<User> saveUser(@RequestBody User user) {
+		User newUser = userServiceImpl.saveUser(user);
+		return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
 	}
 	@GetMapping("/oneuser/{id}")
 	public User getUserById(@PathVariable (value="id") int id) {
 		return userServiceImpl.getUserById(id);
 	}
 	@DeleteMapping("/deleteuser/{id}")
-	public void deleteUserById(@PathVariable (value="id") int id) {
-		userServiceImpl.deleteUserById(id);
-		System.out.println("user deleted successfully!!");
+	public ResponseEntity<HttpStatus> deleteUserById(@PathVariable (value="id") int id) {
+		try {
+			userServiceImpl.deleteUserById(id);
+			return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	@PutMapping("/update/{id}")
-	public User updateUserById(@PathVariable (value="id") int id, @RequestBody User user) {
+	public ResponseEntity<User>  updateUserById(@PathVariable (value="id") int id, @RequestBody User user) {
 		Optional<User> opt = userRepository.findById(id);
 		if(opt.isPresent()) {
 			User newUser = opt.get();
@@ -54,10 +61,11 @@ public class UserController {
 			newUser.setLname(user.getLname());
 			newUser.setDob(user.getDob());
 			newUser.setMobileNo(user.getMobileNo());	
-			return userRepository.save(newUser);
+			return new ResponseEntity<User>(userRepository.save(newUser), HttpStatus.OK);
+		}else {
+			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 		}
 		
-		return userRepository.save(user);
 		
 	}
 }
