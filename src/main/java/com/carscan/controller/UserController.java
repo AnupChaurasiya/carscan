@@ -56,6 +56,7 @@ public class UserController {
 			newUser.setMobileNo(user.getMobileNo());	
 			return userRepository.save(newUser);
 		}
+		
 		return userRepository.save(user);
 		
 	}
