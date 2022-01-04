@@ -1,0 +1,58 @@
+Documentation:
+
+Kindly, go through the below details documentation 
+
+# Making a RESTAPIs for CRUD OPERATION.
+STEP 1:
+Starting the spring tool suite and using Spring Starter Project. Adding the required dependencies, in this project we have downloaded depencies are:
+
+-Spring Web
+for Starter web
+-Spring Boot Dev Tools
+for automatic updation the project, with running everytime mannually
+-Spring Data JPA
+for functionality to use Hibernate JPA Annotation
+-MySQL Driver
+for Connection of jdbc MySQL
+-Lombok
+for avoiding the boiler plate code like getters and setters
+
+STEP 2: PACKAGING STRUCTURE
+Organizing with proper packages of each respective classes  and interfaces
+
+com.carscan is the base package.
+-controller package for the details of UserContrller class.
+-entity package for entity class like User class.
+-repository package for UserRepositoy interface for acheiving the functionality of CRUD Operation or JPARepository.
+-service package for UserService interface using for abstration class writing only method declaration.
+-service.Impl package for method implementation which is already declare in service interface.
+
+STEP 3: ENTITY 
+Making entity class for User and its attributes which is given during assignment
+fname, lname, dob, city and mobile number.
+-Id is auto increment, Id annotation for database, without id can not save the data, we have to make id it could be integer or string data type
+-using @Data annotation for avoiding the getters and setters
+-we can use  @Column annotation for making column in database, if not then automatically makes column using given attribute like. fnam, lname...etc
+
+STEP 4: SERVICE
+In service interface we declare only method, for which method is going to be used for our requirements
+-method for getting the list of User is:
+returning the list of all users and passing the parameter User class and object
+- method for saving the user, does not return any things then we have to use void  and passing the parameter User class and its object
+-method for update user by id, we have to pass parameter  datatype and id for which we can find the details by id
+-method for delete user by id, it is also not returning anything then we have to use void and passing parameter is id with datatype.
+
+STEP 5: SERVICE IMPL
+implementing the above method in service implementation class and use of repository class by autowired annotation to achieve jpa query properties.
+
+STEP 6: CONTROLLER
+Controller class is used to handle the request which is send by web or Postman,
+- in controller we have to make method handler for app apis which is implemented in service implementation class for
+- for returning the list of user,we have to use @Getmapping and given path like("/listusers"),  making method and passing the User class and its object and returning the same.
+- for posting, we have to use @PostMapping annotation for sending the data and save, @Requestbody annotation for sending the User class and its objects
+-for updating the details using the @pathvariable annotation to find the specific id details.
+-same for the delete.
+
+Thank you!
+
+
